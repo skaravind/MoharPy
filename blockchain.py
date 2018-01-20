@@ -1,4 +1,7 @@
-import hashlib
+import hashlib, random, string
+from time import sleep
+from ProofofWork import *
+
 
 class Block:
 	def __init__(self,previoushash, transactions):
@@ -13,14 +16,13 @@ blockchain.append(genesis)
 
 for i in range(2):
 	for j in range(2):
-		transactions = []
-		transaction = input()
-		transactions.append(transaction)
-	trans = ''
-	for t in transactions:
-		trans += t
-	block = Block(blockchain[-1].gethash(), trans.encode())
-	blockchain.append(block)
-	print('Block created!, hash is = %s'%(blockchain[-1].gethash()))
-
+		transaction = ''.join(random.choice(string.ascii_lowercase+string.ascii_uppercase+string.digits) for _ in range(int(random.random()*50)))
+	block = Block(blockchain[-1].gethash(), transaction.encode())
+	print('Block created!, hash is = %s'%(block.gethash()))
+	print('transaction in this block = %s'%transaction)
+	attempt = start(blockchain[-1].gethash().decode())
+	if hashlib.sha256(attempt.encode()).hexdigest().startswith('0000'):
+		print('Validated!')
+		blockchain.append(block)
+		print('Block added to the blockchain')
 print(blockchain)
