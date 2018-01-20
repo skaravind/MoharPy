@@ -1,18 +1,17 @@
-import hashlib, random, string
-from time import sleep
+import time, datetime
 from ProofofWork import *
 
 
 class Block:
 	def __init__(self,previoushash, transactions):
 		self.hashofBlock = hashlib.sha256(hashlib.sha256(transactions).hexdigest().encode() + previoushash).hexdigest().encode()
+		self.timestamp = str(datetime.datetime.now())
 
 	def gethash(self):
 		return self.hashofBlock
 
 genesis = Block(b'0',b'Aravind sends 10 MoHARs to Utkarsh')
-blockchain = []
-blockchain.append(genesis)
+blockchain = [genesis]
 
 for i in range(2):
 	for j in range(2):
